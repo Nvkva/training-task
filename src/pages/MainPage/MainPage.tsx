@@ -1,56 +1,25 @@
-import { mainPageData, MainPageData } from '@/api/main-page';
+// screens/MainPage/MainPage.tsx
 import { Button } from '@/components/Button/Button';
 import { Layout } from '@/components/Layout/Layout';
-import { Modal } from '@/components/Modal/Modal';
 import { Section } from '@/components/Section/Section';
-import LoginForm from '@/screens/LoginForm/LoginForm';
-import RegisterForm from '@/screens/RegisterForm/RegisterForm';
-import { useEffect, useState } from 'react';
+import { MainPageData } from '@/api/main-page';
+import { footerSettings, headerSettings } from '@/constants/constans';
+import { ButtonLink } from '@/ui';
 
-const MainPage: React.FC = () => {
-	const [isLoginDialogDisplayed, displayLoginDialog] = useState(false);
-	const [isRegisterDialogDisplayed, displayRegisterDialog] = useState(false);
-	const [data, setData] = useState<MainPageData | null>(null);
-	const [error, setError] = useState<string | null>(null);
+type MainPageProps = {
+	data: MainPageData | null;
+	error: string | null;
+};
 
-	useEffect(() => {
-		mainPageData()
-			.then((response) => setData(response))
-			.catch((err) =>
-				setError(err instanceof Error ? err.message : String(err))
-			);
-	}, []);
-
+const MainPage: React.FC<MainPageProps> = ({
+	data,
+	error,
+}) => {
 	return (
-		<Layout headerSettings={{ menu: [] }} footerSettings={{ columns: [] }}>
+		<Layout headerSettings={headerSettings} footerSettings={footerSettings}>
 			<Section>
-				<Button onClick={() => displayLoginDialog(true)}>Login</Button>
-				<Button onClick={() => displayRegisterDialog(true)}>Register</Button>
-				{isLoginDialogDisplayed && (
-					<Modal onClose={() => displayLoginDialog(false)}>
-						<LoginForm
-							onSubmit={(email, password) => {
-								console.log('Login data:', { email, password });
-								displayLoginDialog(false);
-							}}
-						/>
-					</Modal>
-				)}
-				{isRegisterDialogDisplayed && (
-					<Modal onClose={() => displayRegisterDialog(false)}>
-						<RegisterForm
-							onSubmit={(name, email, password, confirmPassword) => {
-								console.log('Register data:', {
-									name,
-									email,
-									password,
-									confirmPassword,
-								});
-								displayRegisterDialog(false);
-							}}
-						/>
-					</Modal>
-				)}
+				<ButtonLink href={'/login'}>Login</ButtonLink>
+				<ButtonLink href={'/register'}>Register</ButtonLink>
 				{data && <div>{data.message}</div>}
 				{error && <div>Error: {error}</div>}
 			</Section>

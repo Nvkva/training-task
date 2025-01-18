@@ -27,7 +27,8 @@ function withType(
 	defaultTag?: keyof React.JSX.IntrinsicElements,
 	defaultType?: string,
 ) {
-	return forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(function Input(
+	return forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
+		function Input(
 		{
 			value,
 			onChange,

@@ -1,41 +1,26 @@
-import { registrationRequest, RegistrationData } from "@/api/register-page";
-import { Card } from "@/components/Card/Card";
-import { Layout } from "@/components/Layout/Layout";
-import { Section } from "@/components/Section/Section";
-import RegisterForm from "@/screens/RegisterForm/RegisterForm";
-import { useEffect, useState } from "react";
+// screens/RegisterPage/RegisterPage.tsx
+import { Card } from '@/components/Card/Card';
+import { Layout } from '@/components/Layout/Layout';
+import { Section } from '@/components/Section/Section';
+import RegisterForm from '@/screens/RegisterForm/RegisterForm';
+import { RegistrationData } from '@/api/register-page';
+import { footerSettings, headerSettings } from '@/constants/constans';
+import RegisterFormContainer from '@/connectors/RegisterForm/RegisterForm';
 
-const handleRegistration = (
-	name: string,
-	email: string,
-	password: string,
-	confirmPassword: string
-) => {
-	console.log('Registration data:', {
-		name,
-		email,
-		password,
-		confirmPassword,
-	});
+type RegisterPageProps = {
+	data: RegistrationData | null;
+	error: string | null;
 };
 
-const RegisterPage: React.FC = () => {
-	const [data, setData] = useState<RegistrationData | null>(null);
-	const [error, setError] = useState<string | null>(null);
-
-	useEffect(() => {
-		registrationRequest()
-			.then((response) => setData(response))
-			.catch((err) =>
-				setError(err instanceof Error ? err.message : String(err))
-			);
-	}, []);
-
+const RegisterPage: React.FC<RegisterPageProps> = ({
+	data,
+	error,
+}) => {
 	return (
-		<Layout headerSettings={{ menu: [] }} footerSettings={{ columns: [] }}>
+		<Layout headerSettings={headerSettings} footerSettings={footerSettings}>
 			<Section>
 				<Card>
-					<RegisterForm onSubmit={handleRegistration} />
+					<RegisterFormContainer />
 				</Card>
 				{data && <div>{data.message}</div>}
 				{error && <div>Error: {error}</div>}

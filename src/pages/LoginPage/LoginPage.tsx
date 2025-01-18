@@ -1,31 +1,22 @@
-import { loginRequest, LoginData } from '@/api/login-page';
+import { LoginData } from '@/api/login-page';
 import { Section } from '@/components/Section/Section';
 import { Layout } from '@/components/Layout/Layout';
-import { useEffect, useState } from 'react';
 import { Card } from '@/components/Card/Card';
-import LoginForm from '@/screens/LoginForm/LoginForm';
+import { footerSettings, headerSettings } from '@/constants/constans';
+import LoginFormContainer from '@/connectors/LoginForm/LoginForm';
 
-const handleLoginSubmit = (email: string, password: string) => {
-	console.log('Login data:', { email, password });
+type LoginPageProps = {
+	data: LoginData | null;
+	error: string | null;
+	onSubmit: (email: string, password: string) => void;
 };
 
-const LoginPage: React.FC = () => {
-	const [data, setData] = useState<LoginData | null>(null);
-	const [error, setError] = useState<string | null>(null);
-
-	useEffect(() => {
-		loginRequest()
-			.then((response) => setData(response))
-			.catch((err) =>
-				setError(err instanceof Error ? err.message : String(err))
-			);
-	}, []);
-
+const LoginPage: React.FC<LoginPageProps> = ({ data, error, onSubmit }) => {
 	return (
-		<Layout headerSettings={{ menu: [] }} footerSettings={{ columns: [] }}>
+		<Layout headerSettings={headerSettings} footerSettings={footerSettings}>
 			<Section>
 				<Card>
-					<LoginForm onSubmit={handleLoginSubmit} />
+					<LoginFormContainer />
 				</Card>
 				{data && <div>{data.message}</div>}
 				{error && <div>Error: {error}</div>}

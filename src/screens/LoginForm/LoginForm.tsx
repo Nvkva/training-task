@@ -1,16 +1,23 @@
-import { Field } from "@/components/Field/Field";
-import { InputEmail, InputPassword } from "@/components/Input/Input";
-import { Button } from "@/components/Button/Button";
-import { useState } from "react";
+// screens/LoginForm/LoginForm.tsx
+import { Field } from '@/components/Field/Field';
+import { Button } from '@/components/Button/Button';
+import React, { ChangeEvent } from 'react';
 
 export interface LoginFormProps {
+	email: string;
+	password: string;
+	onEmailChange: (email: string) => void;
+	onPasswordChange: (password: string) => void;
 	onSubmit: (email: string, password: string) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
+const LoginForm: React.FC<LoginFormProps> = ({
+	email,
+	password,
+	onEmailChange,
+	onPasswordChange,
+	onSubmit,
+}) => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onSubmit(email, password);
@@ -18,9 +25,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
 	return (
 		<form onSubmit={handleSubmit}>
-      <Field><InputEmail value={email} onChange={(e) => setEmail(e.target.value)}></InputEmail></Field>
-      <Field><InputPassword value={password} onChange={(e: any) => setPassword(e.target.value)}></InputPassword></Field>
-			<Button onClick={() => {}}>Login</Button>
+			<Field
+				fieldText="Почта"
+				type="email"
+				value={email}
+				onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+					onEmailChange(event.target.value)
+				}
+			/>
+			<Field
+				fieldText="Пароль"
+				type="password"
+				value={password}
+				onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+					onPasswordChange(event.target.value)
+				}
+			/>
+			<Button>Login</Button>
 		</form>
 	);
 };

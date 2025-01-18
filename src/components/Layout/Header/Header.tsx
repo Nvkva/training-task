@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import styles from './Header.module.scss';
 import { Anchor } from '@/components/Anchor/Anchor';
+import { Menu } from '@/components/Menu/Menu';
 
 export type MenuLink = {
 	label: string | ReactNode;
@@ -31,13 +32,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
 			<div className={styles.container}>
 				<Anchor href="/" className={styles.logo} />
 				<nav className={clsx(styles.menu)}>
-					<ul className={styles.menuContent}>
-						{menu.map(({ label, href }, index) => (
-							<li key={index} className={styles.link}>
-								<Anchor href={href}>{label}</Anchor>
-							</li>
-						))}
-					</ul>
+					<Menu links={menu.map(el=>({url: el.href, linkTitle: el.label}))}></Menu>
 				</nav>
 				<nav className={styles.controls}>{children}</nav>
 			</div>
